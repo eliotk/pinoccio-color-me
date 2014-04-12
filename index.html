@@ -1,0 +1,71 @@
+<html>
+  <title>pinoccio API demo</title>
+  <head>
+    <script src="https://api.pinocc.io/pinoccio.js"></script>
+    <script type="text/javascript">
+      window.onload = function(){
+        // instansiate our main pinoccio API object which is defined in https://api.pinocc.io/pinoccio.js
+        api = pinoccioAPI();
+
+        function getCookie(name) {
+          var value = "; " + document.cookie;
+          var parts = value.split("; " + name + "=");
+          if (parts.length == 2) return parts.pop().split(";").shift();
+        }
+
+        function sync_and_color(api) {
+          // istantiate a pinoccio api.sync object
+          sync_stream = api.sync()
+
+          // add a callback function to handle incoming events from the sync stream
+          sync_stream.on('data', function(data) {
+            console.log(data)
+
+            // when the streamed event object's "type" value is "led", update the page background color
+            if( data.type === 'led' ) {
+              document.body.style.backgroundColor= 'rgb(' + data.value.led + ')';
+            }
+          })
+        }
+
+        function pinoccioLogin(api) {
+          email = document.getElementById('email').value;
+          password = document.getElementById('password').value;
+          api.login(email, password, function(error, data) {
+            if(error) return alert('Login failed');
+            alert('Login success! Page background will now update when the scout LED changes.');
+            sync_and_color(api);
+          });
+          return false; 
+        }
+
+        if (getCookie("pinoccio_id")) {
+          // the auth token is already established as the pinoccio_id cookie value.
+          // this is done within the api.login method
+          sync_and_color(api);
+          document.getElementById('token_set').innerHTML = 'Your token is already set as the cookie \
+          "pinoccio_id". You can login again to change the token you are using';
+        }
+      };
+    </script>
+    <style type="text/css">
+      * {
+        font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="background-color: #FFF; padding: 20px;">
+      <h1>A <a href="http://pinocc.io">pinoccio</a> API example.</h1>
+      <h3>The background of the page will mirror the scout led color and update in realtime when it changes.</h3>
+      <h4 id="token_set">You'll need to first login:</h4>
+      <p>
+        <form onSubmit="pinoccioLogin(api);" id="login_form">
+          <p>pinoccio acccount email address: <br /><input name="email" id="email" /></p>
+          <p>pinoccio account password: <br /><input name="password" id="password" type="password" /></p>
+          <input type="submit" value="login" />
+        </form>
+      </p>
+    <div>
+  </body>
+</html>
