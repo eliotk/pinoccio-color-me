@@ -2,8 +2,9 @@
   <title>pinoccio API demo - pinoccio color me</title>
   <head>
     <script src="https://api.pinocc.io/pinoccio.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script type="text/javascript">
-      window.onload = function(){
+      $(document).ready(function() {
         // instansiate our main pinoccio API object which is defined in https://api.pinocc.io/pinoccio.js
         api = pinoccioAPI();
 
@@ -39,6 +40,11 @@
           return false; 
         }
 
+        $( "#login_form" ).submit(function( event ) {
+          pinoccioLogin(api);
+          event.preventDefault();
+        });
+
         if (getCookie("pinoccio_id")) {
           // the auth token is already established as the pinoccio_id cookie value.
           // this is done within the api.login method
@@ -46,7 +52,7 @@
           document.getElementById('token_set').innerHTML = 'Your token is already set as the cookie \
           "pinoccio_id". You can login again to change the token you are using';
         }
-      };
+      });
     </script>
     <style type="text/css">
       * {
@@ -63,7 +69,7 @@
         <form id="login_form">
           <p>pinoccio acccount email address: <br /><input name="email" id="email" /></p>
           <p>pinoccio account password: <br /><input name="password" id="password" type="password" /></p>
-          <input type="button" value="Submit" onclick="pinoccioLogin(api);" />
+          <input type="submit" value="Submit" />
         </form>
       </p>
     <div>
