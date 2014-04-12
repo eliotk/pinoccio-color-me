@@ -60,10 +60,10 @@
       <h3>The background of the page will mirror the scout led color and update in realtime when it changes.</h3>
       <h4 id="token_set">You'll need to first login:</h4>
       <p>
-        <form onSubmit="pinoccioLogin(api);" id="login_form">
+        <form id="login_form">
           <p>pinoccio acccount email address: <br /><input name="email" id="email" /></p>
           <p>pinoccio account password: <br /><input name="password" id="password" type="password" /></p>
-          <input type="submit" value="login" />
+          <input type="button" value="Submit" onclick="pinoccioLogin(api);" />
         </form>
       </p>
     <div>
