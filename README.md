@@ -7,4 +7,4 @@ It uses the official linked version of the pinoccio API.
 
 I tried to add helpful comments and keep the javascript as simple as possible to serve as a "hello world" type example.
 
-[The example hosted by Github Pages]()
+[The example hosted by Github Pages](https://eliotk.github.io/pinoccio-color-me/)
